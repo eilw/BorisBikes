@@ -7,8 +7,32 @@ describe DockingStation do
     expect(bike).to be_working
   end
 
-  it { is_expected. to respond_to :dock_bike }
+  it { is_expected. to respond_to(:dock_bike).with(1).argument }
+
+
+
   it 'dock_bike increase no_people by one' do
-    expect(subject.dock_bike).to change{no_bikes+1}.by(1)
+    bike = Bike.new
+    expect{subject.dock_bike(bike)}.to change{subject.no_bikes}.by(1)
   end
+  it { is_expected. to respond_to :available }
+
+  it 'returns bikes that are docked' do
+    bike = Bike.new
+    subject.dock_bike(bike)
+    expect(subject.bike).to eq bike
+  end
+
 end
+
+
+=begin
+#Why does this not work?
+if (subject.no_bikes == 0)
+  it { expect(subject.available).to be_false }
+end
+#if (subject.no_bikes >= 1)
+#  it { expect(subject.available).to be_true }
+#end
+
+=end
