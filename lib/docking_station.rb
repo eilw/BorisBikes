@@ -11,13 +11,19 @@ class DockingStation
 
   def release_bike
     fail 'No bikes available' if empty?
+    fail 'Bike is broken' unless bikes[-1].bike_status
     bikes.pop
   end
 
-  def dock_bike(bike) #working=true)
+  def bike_report(returned_bike, status=true)
+    returned_bike.bike_status = status
+    dock_bike(returned_bike) #if status
+    status
+  end
+
+  def dock_bike(bike)
     raise "No space!" if full?
-    #report = working
-    bikes << bike   
+    bikes << bike
   end
 
   private
@@ -33,9 +39,13 @@ class DockingStation
 end
 
 class Bike
+  attr_accessor :bike_status
+  def initialize
+    @bike_status = true
+  end
 
   def working?
-    true
+    bike_status
   end
 
 end

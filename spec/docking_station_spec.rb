@@ -15,32 +15,44 @@ describe DockingStation do
         expect(subject.release_bike).to eq bike
       end
       it 'should be working' do
-        expect(bike).to be_working
+        subject.dock_bike(bike)
+        expect(subject.release_bike).to be_working
       end
+
+      it 'not release broken bike' do
+        subject.bike_report(bike,false)
+        expect{subject.release_bike}.to raise_error('Bike is broken')
+      end
+
     end
+
+
 
   describe Bike do
     let (:bike){Bike.new}
     it {is_expected.to respond_to :working?}
-
-   # it 'expecting bike to break' {is_expect.to respond_to(dock_bike(bike, false))}
   end
 
-  
-
-  
 
 
 
-  it { is_expected.to respond_to(:dock_bike).with(2).argument }
+
+
+
+  it { is_expected.to respond_to(:dock_bike).with(1).argument }
 
   it { is_expected.to respond_to(:bikes)}
 
+  it { is_expected.to respond_to(:bike_report).with(2).argument}
 
   it 'error since no bikes available' do
     expect {subject.release_bike}.to raise_error("No bikes available")
   end
-
+    describe '#bike_report' do
+      it 'reports if it is broken' do
+        expect(subject.bike_report(Bike.new, false)).to eq false
+      end
+    end
 
     describe '#dock_bike' do
       it 'docks something' do
@@ -67,7 +79,7 @@ describe DockingStation do
       end
 
 
-      it 'initializing with capacity of 49' do
+      it 'initializes with variable capacity' do
         station = DockingStation.new 49
         station.capacity.times{station.dock_bike(bike)}
         expect {station.dock_bike(bike)}.to raise_error 'No space!'
