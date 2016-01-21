@@ -5,13 +5,13 @@ describe DockingStation do
   #let(:bike) {double(:bike, working?: true,
   #  broken?: false)}
 
-  let(:bike) {double(:bike)}
+  let(:bike) {double(:bike, working?: true)}
+  let(:broken_bike) {double(:bike, working?: false)}
 
   it { is_expected.to respond_to(:release_bike) }
 
   it 'check if bike is working' do
     #allow(bike).to receive(:working?).and_return(true)
-    bike = double(:bike, working?: true)
     expect(bike.working?).to eq true
   end
 
@@ -30,7 +30,6 @@ describe DockingStation do
 
   it 'release a bike when it is available' do
     #allow(bike).to receive(:broken?).and_return(false)
-    bike = double(:bike, working?: true)
     subject.dock_bike(bike)
     expect(subject.release_bike).to eq bike
   end
@@ -40,17 +39,38 @@ describe DockingStation do
   end
 
   it 'raise an error when station is full' do
-    DockingStation::DEFAULT_CAPACITY.times { subject.dock_bike(bike) }
+    subject.capacity.times { subject.dock_bike(bike) }
     expect { subject.dock_bike(bike) }.to raise_error("Station is full!")
   end
 
   it 'should release all broken bikes' do
      bikes = [
-     broken_bike1 = double(:bike, working?: false),
-     broken_bike2 = double(:bike, working?: false),
-     working_bike3 = double(:bike, working?: true)]
+     broken_bike1 = broken_bike,
+     broken_bike2 = broken_bike,
+     working_bike3 = bike]
      bikes.each {|bike| subject.dock_bike(bike)}
      expect(subject.release_broken).to include broken_bike1, broken_bike2
   end
+
+  it 'should not have any of the released bikes in the station' do
+     bikes = [
+     broken_bike1 = broken_bike,
+     broken_bike2 = broken_bike,
+     working_bike3 = bike]
+     bikes.each {|bike| subject.dock_bike(bike)}
+     subject.release_broken
+     expect(subject.bikes).not_to include broken_bike1
+  end
+
+  it 'enable multiple bikes to be docked' do
+    bikes = [
+    broken_bike1 = broken_bike,
+    broken_bike2 = broken_bike,
+    working_bike3 = bike]
+    subject.dock_bike(bikes)
+    expect(subject.bikes).to include broken_bike1, broken_bike2, working_bike3
+
+  end
+
 
 end

@@ -13,7 +13,9 @@ class DockingStation
   end
 
   def release_broken
-    bikes.reject{|bike| bike.working?}.push
+    a = bikes.reject{|bike| bike.working?}
+    bikes.select!{|bike| bike.working?}
+    a
   end
 
   def release_bike
@@ -24,7 +26,7 @@ class DockingStation
 
   def dock_bike(bike)
     raise "Station is full!" if full?
-    bikes << bike
+    bike.kind_of?(Array) ? bikes.concat(bike) : bikes << bike
   end
 
   private
