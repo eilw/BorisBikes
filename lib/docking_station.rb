@@ -12,20 +12,25 @@ class DockingStation
 
   def release_bike
     fail 'No bikes available' if empty?
-    @bikes.pop unless @broken == true
+    bikes.pop unless bikes[-1].broken?
   end
 
   def dock(bike)
     fail 'Docking station full' if full?
-    @bikes << bike
+    bikes << bike
   end
 
+  def release_broken_bikes
+    a = bikes.select {|i| i.broken?}
+    bikes.reject! {|i| i.broken?}
+    a
+  end
   private
   def full?
-    @bikes.count >= capacity
+    bikes.count >= capacity
   end
 
   def empty?
-    @bikes.empty?
+    bikes.empty?
   end
 end
