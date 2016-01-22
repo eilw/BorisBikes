@@ -1,19 +1,12 @@
 require 'bike'
+require 'BikeContainer'
 
 class Van
-
+  include BikeContainer
   attr_reader :bikes
 
   def initialize
     @bikes = []
-  end
-
-  def load(bike)
-    bikes << bike
-  end
-
-  def unload
-    bikes.pop(bikes.length)
   end
 
   def unload_broken_bikes

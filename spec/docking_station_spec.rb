@@ -50,22 +50,22 @@ describe DockingStation do
     expect(subject.capacity).to eq DockingStation::DEFAULT_CAPACITY
   end
 
-  describe '#release_broken_bikes' do
+  describe '#unload' do
     it 'releases broken bikes to van' do
       subject.dock(bike_broken)
       subject.dock(bike)
-      expect(subject.release_broken_bikes).to include bike_broken
+      expect(subject.unload).to include bike_broken
     end
 
     it 'checks the array doesn\'t include working bike' do
       subject.dock(bike_broken)
       subject.dock(bike)
-      expect(subject.release_broken_bikes).not_to include bike
+      expect(subject.unload).not_to include bike
     end
 
     it 'removes broken bikes from dock' do
       subject.dock(bike_broken)
-      subject.release_broken_bikes
+      subject.unload
       expect(subject.bikes).not_to include bike_broken
     end
 

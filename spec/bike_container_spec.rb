@@ -16,8 +16,8 @@ shared_examples 'container' do
 
   describe 'unload' do
     it 'unloads bikes' do
-      subject.load(bike)
-      expect(subject.unload).to include bike
+      subject.load(bike_broken)
+      expect(subject.unload).to include bike_broken
     end
   end
 end

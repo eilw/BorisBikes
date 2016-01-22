@@ -1,7 +1,9 @@
 require_relative 'bike'
+require 'bikecontainer'
 
 class DockingStation
 
+  include BikeContainer
   DEFAULT_CAPACITY = 20
   attr_reader :bikes, :capacity
 
@@ -15,10 +17,6 @@ class DockingStation
     bikes.pop unless bikes[-1].broken?
   end
 
-  def load(bike)
-    bikes << bike
-  end
-
   def dock(bike)
     fail 'Docking station full' if full?
     bikes << bike
@@ -29,7 +27,9 @@ class DockingStation
     bikes.reject! {|i| i.broken?}
     a
   end
+
   private
+
   def full?
     bikes.count >= capacity
   end
