@@ -15,12 +15,16 @@ class DockingStation
     bikes.pop unless bikes[-1].broken?
   end
 
+  def load(bike)
+    bikes << bike
+  end
+
   def dock(bike)
     fail 'Docking station full' if full?
     bikes << bike
   end
 
-  def release_broken_bikes
+  def unload #- previously release_broken_bikes
     a = bikes.select {|i| i.broken?}
     bikes.reject! {|i| i.broken?}
     a

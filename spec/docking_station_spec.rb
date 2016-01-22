@@ -8,6 +8,8 @@ describe DockingStation do
 
   it { is_expected.to respond_to :release_bike }
 
+  it_behaves_like 'container'
+
   describe '#release_bike' do
     it 'releases a bike' do
       subject.dock(bike)

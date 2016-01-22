@@ -1,18 +1,13 @@
 require 'van'
+require 'bike_container_spec'
 
 describe Van do
 
   let(:bike) {double(:bike, broken?: false)}
   let(:bike_broken) {double(:bike, broken?: true)}
 
-  it 'collects bikes' do
-    expect(subject.load(bike_broken)).to include bike_broken
-  end
+  it_behaves_like 'container'
 
-  it 'unloads bikes' do
-    subject.load(bike)
-    expect(subject.unload).to include bike
-  end
 
   it 'unloads broken bikes' do
     subject.load(bike_broken)
